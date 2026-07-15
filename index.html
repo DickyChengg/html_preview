@@ -9,6 +9,9 @@
   <!-- Konfigurasi tambahan agar sesuai min-width 375 max-width 450 -->
   <style>
     /* demo safe area & constraint */
+    html, body {
+        height: 100%;
+    }
     body {
       background: #f3f4f6;
       display: flex;
@@ -16,22 +19,22 @@
       justify-content: center;
       min-height: 100vh;
       margin: 0;
-      padding: 12px;
+      padding: 0px;
     }
     .sales-card {
-      width: 100%;
-      min-width: 375px;
-      max-width: 450px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 28px;
-      box-shadow: 0 20px 35px rgba(0,0,0,0.05), 0 8px 18px rgba(0,0,0,0.03);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: auto;
-      max-height: 720px;
-    }
+  width: 100%;
+  min-width: 375px;
+  max-width: 450px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 0; /* ubah dari 28px ke 0 untuk full height */
+  box-shadow: none; /* opsional: hilangkan shadow */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* tambahkan ini */
+  max-height: 100vh; /* ubah dari 720px ke 100vh */
+}
     /* scroll custom */
     .scroll-container {
       overflow-y: auto;
