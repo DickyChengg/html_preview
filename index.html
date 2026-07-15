@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Sales Orders · Dioxus Ready</title>
+  <!-- Tailwind via CDN untuk demo, saat migrasi gunakan versi build yang sama -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Konfigurasi tambahan agar sesuai min-width 375 max-width 450 -->
+  <style>
+    /* demo safe area & constraint */
+    body {
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 12px;
+    }
+    .sales-card {
+      width: 100%;
+      min-width: 375px;
+      max-width: 450px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.05), 0 8px 18px rgba(0,0,0,0.03);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      max-height: 720px;
+    }
+    /* scroll custom */
+    .scroll-container {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+    }
+    .scroll-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scroll-container::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+    .scroll-container::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 8px;
+    }
+
+    /* checkbox-based filter toggles (pure css) */
+    .filter-status-all:checked ~ .order-list .order-item {
+      display: flex;
+    }
+    .filter-status-green:checked ~ .order-list .order-item:not(.status-green) {
+      display: none;
+    }
+    .filter-status-yellow:checked ~ .order-list .order-item:not(.status-yellow) {
+      display: none;
+    }
+    .filter-status-red:checked ~ .order-list .order-item:not(.status-red) {
+      display: none;
+    }
+
+    /* date filter simulation: radio buttons untuk bulan/tahun? 
+       Karena tanpa JS kita pakai trik class berbasis data + radio.
+       Di sini kita buat filter sederhana: "bulan ini" (April 2026), "Maret 2026", "Semua".
+       Data disesuaikan dengan class tanggal. Pendekatan: setiap item punya class date-group.
+    */
+    .filter-date-all:checked ~ .order-list .order-item {
+      display: flex;
+    }
+    .filter-date-april:checked ~ .order-list .order-item:not(.date-april) {
+      display: none;
+    }
+    .filter-date-maret:checked ~ .order-list .order-item:not(.date-maret) {
+      display: none;
+    }
+
+    /* Kombinasi filter: jika status dan tanggal aktif, harus memenuhi keduanya.
+       Pendekatan pure CSS: kita gunakan container dengan radio berbeda.
+       Karena keterbatasan CSS tanpa JS, kita pakai struktur: 
+       Filter tanggal dan status independen, tapi prioritas terakhir menang.
+       Untuk demo realistis: kita buat dua grup filter terpisah dan item hanya muncul jika cocok dengan kedua aturan.
+       Trik: kita gunakan :checked untuk menyembunyikan yang tidak cocok. 
+       Agar lebih solid, kita atur aturan display berdasarkan kombinasi.
+       Untuk kesederhanaan, saya buat agar status dan tanggal bekerja bersama menggunakan wrapper check.
+    */
+    /* Implementasi: kita bungkus order-list dengan kelas pembantu.
+       Setiap kali filter diubah, aturan display akan dievaluasi.
+       Tapi CSS tidak bisa "AND" secara langsung. 
+       Solusi kreatif: gunakan selector yang mensyaratkan kedua kondisi dengan struktur bersarang?
+       Atau kita gunakan pendekatan: filter tanggal dan status mempengaruhi item berdasarkan class.
+       Agar kombinasi berfungsi, kita pasang aturan bertingkat.
+       Contoh: jika filter-status-green DAN filter-date-april dipilih, maka hanya .status-green.date-april yang terlihat.
+       Kita tulis aturan spesifik untuk kombinasi yang mungkin.
+       Demi menjaga kode tetap bersih dan tidak meledak, saya batasi kombinasi yang masuk akal.
+    */
+    /* Kombinasi wajib: status all & date all -> semua tampil (default) */
+    /* status spesifik + date all */
+    .filter-status-green:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-green),
+    .filter-status-yellow:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-yellow),
+    .filter-status-red:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-red) {
+      display: none;
+    }
+    /* status all + date spesifik */
+    .filter-status-all:checked.filter-date-april:checked ~ .order-list .order-item:not(.date-april),
+    .filter-status-all:checked.filter-date-maret:checked ~ .order-list .order-item:not(.date-maret) {
+      display: none;
+    }
+    /* kombinasi status green + date april */
+    .filter-status-green:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-green.date-april) {
+      display: none;
+    }
+    .filter-status-green:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-green.date-maret) {
+      display: none;
+    }
+    .filter-status-yellow:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-yellow.date-april) {
+      display: none;
+    }
+    .filter-status-yellow:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-yellow.date-maret) {
+      display: none;
+    }
+    .filter-status-red:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-red.date-april) {
+      display: none;
+    }
+    .filter-status-red:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-red.date-maret) {
+      display: none;
+    }
+
+    /* search bar pure css: menggunakan input text dengan :placeholder-shown dan selector saudara.
+       Trik search: kita sembunyikan item yang tidak mengandung teks pencarian.
+       Tanpa JS kita tidak bisa filter real-time berdasarkan value. 
+       Tapi kita bisa menggunakan teknik checkbox sebagai toggle pencarian? 
+       Karena tidak memungkinkan, saya buat searchbar sebagai elemen visual yang terhubung ke Dioxus nanti.
+       Di sini searchbar tampil dan bisa diketik, tetapi filtering real hanya dengan status & tanggal.
+       Untuk pengalaman murni CSS, saya tambahkan catatan bahwa search siap untuk binding Dioxus.
+    */
+    /* placeholder styling */
+    .search-input::placeholder {
+      color: #9ca3af;
+      font-weight: 400;
+    }
+
+    /* status dot */
+    .dot-red { background: #ef4444; box-shadow: 0 0 0 2px rgba(239,68,68,0.25); }
+    .dot-yellow { background: #eab308; box-shadow: 0 0 0 2px rgba(234,179,8,0.25); }
+    .dot-green { background: #10b981; box-shadow: 0 0 0 2px rgba(16,185,129,0.25); }
+
+    /* label aktif untuk filter */
+    .filter-label {
+      transition: all 0.15s;
+      cursor: pointer;
+      user-select: none;
+    }
+    input[type="radio"]:checked + .filter-label {
+      background: #0f172a;
+      color: white;
+      border-color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+  <div class="sales-card">
+    <!-- Header -->
+    <div class="px-5 pt-5 pb-3 flex items-center justify-between">
+      <h2 class="text-xl font-bold tracking-tight text-slate-800">Sales Orders</h2>
+      <span class="text-xs font-medium bg-slate-100 px-3 py-1.5 rounded-full text-slate-500">12 orders</span>
+    </div>
+
+    <!-- Search bar (visual, tanpa JS logic) -->
+    <div class="px-5 pb-3">
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"></path>
+        </svg>
+        <input type="text" placeholder="Cari ID atau nama..." 
+               class="search-input w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition">
+      </div>
+      <p class="text-[10px] text-slate-400 mt-1.5 ml-1 flex items-center gap-1">
+        <span class="inline-block w-1 h-1 rounded-full bg-indigo-300"></span> 
+        Search siap di-bind ke Dioxus state
+      </p>
+    </div>
+
+    <!-- Filter Section (Pure CSS dengan hidden radio) -->
+    <div class="px-5 pb-2 space-y-3">
+      <!-- Filter Status -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-500 font-medium mr-1">Status:</span>
+        <input type="radio" name="filter-status" id="statusAll" class="filter-status-all hidden" checked>
+        <label for="statusAll" class="filter-label px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium">Semua</label>
+        
+        <input type="radio" name="filter-status" id="statusGreen" class="filter-status-green hidden">
+        <label for="statusGreen" class="filter-label px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium flex items-center gap-1"><span class="w-2 h-2 rounded-full dot-green"></span> Green</label>
+        
+        <input type="radio" name="filter-status" id="statusYellow" class="filter-status-yellow hidden">
+        <label for="statusYellow" class="filter-label px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium flex items-center gap-1"><span class="w-2 h-2 rounded-full dot-yellow"></span> Yellow</label>
+        
+        <input type="radio" name="filter-status" id="statusRed" class="filter-status-red hidden">
+        <label for="statusRed" class="filter-label px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium flex items-center gap-1"><span class="w-2 h-2 rounded-full dot-red"></span> Red</label>
+      </div>
+
+      <!-- Filter Tanggal (bulan) -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-500 font-medium mr-1">Tanggal:</span>
+        <input type="radio" name="filter-date" id="dateAll" class="filter-date-all hidden" checked>
+        <label for="dateAll" class="filter-label px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium">Semua</label>
+        
+        <input type="radio" name="filter-date" id="dateApril" class="filter-date-april hidden">
+        <label for="dateApril" class="filter-label px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium">April 2026</label>
+        
+        <input type="radio" name="filter-date" id="dateMaret" class="filter-date-maret hidden">
+        <label for="dateMaret" class="filter-label px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium">Maret 2026</label>
+      </div>
+      <div class="text-[10px] text-slate-400">Pilih filter, hasil otomatis diperbarui.</div>
+    </div>
+
+    <!-- Order List Container -->
+    <div class="scroll-container px-5 pb-6 pt-1 flex-1 order-list space-y-2.5">
+      <!-- Item 1 · green, april -->
+      <div class="order-item status-green date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-green"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2841</div>
+            <div class="text-xs text-slate-500 mt-0.5">PT Maju Jaya</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">14 Apr 2026</div>
+      </div>
+      <!-- Item 2 · yellow, april -->
+      <div class="order-item status-yellow date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-yellow"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2892</div>
+            <div class="text-xs text-slate-500 mt-0.5">Cahaya Baru</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">10 Apr 2026</div>
+      </div>
+      <!-- Item 3 · red, maret -->
+      <div class="order-item status-red date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-red"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2765</div>
+            <div class="text-xs text-slate-500 mt-0.5">Berkah Sentosa</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">28 Mar 2026</div>
+      </div>
+      <!-- Item 4 · green, maret -->
+      <div class="order-item status-green date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-green"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2801</div>
+            <div class="text-xs text-slate-500 mt-0.5">Digital Nusa</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">22 Mar 2026</div>
+      </div>
+      <!-- Item 5 · red, april -->
+      <div class="order-item status-red date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-red"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2910</div>
+            <div class="text-xs text-slate-500 mt-0.5">Global Niaga</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">05 Apr 2026</div>
+      </div>
+      <!-- Item 6 · yellow, maret -->
+      <div class="order-item status-yellow date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-yellow"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2788</div>
+            <div class="text-xs text-slate-500 mt-0.5">Sumber Rejeki</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">19 Mar 2026</div>
+      </div>
+      <!-- Item 7 · green, april -->
+      <div class="order-item status-green date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-green"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2925</div>
+            <div class="text-xs text-slate-500 mt-0.5">Artha Prima</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">18 Apr 2026</div>
+      </div>
+      <!-- Item 8 · red, april -->
+      <div class="order-item status-red date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full dot-red"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2903</div>
+            <div class="text-xs text-slate-500 mt-0.5">Mitra Utama</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">02 Apr 2026</div>
+      </div>
+    </div>
+    <!-- subtle footer -->
+    <div class="px-5 py-2 border-t border-slate-100 text-[10px] text-slate-400 text-right">
+      min 375 · max 450 · pure CSS filter
+    </div>
+  </div>
+</body>
+</html>
