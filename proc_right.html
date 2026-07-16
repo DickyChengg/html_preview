@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Detail Sales Order · Dioxus Ready</title>
+  <title>Procurement Detail · Dioxus Ready</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-[90vh] m-0 p-0 bg-gray-100 flex items-center justify-center">
-  <div class="w-full min-w-[375px] h-full mx-auto bg-white flex flex-col overflow-hidden">
+<body class="h-full m-0 p-0 bg-gray-100 flex items-center justify-center">
+  <div class="w-full min-w-[375px] max-w-[450px] h-screen max-h-screen mx-auto bg-white flex flex-col overflow-hidden">
     
-    <!-- Header dengan back button -->
+    <!-- Header (Sama dengan Detail SO) -->
     <div class="px-5 pt-5 pb-3 flex items-center gap-3 flex-shrink-0 border-b border-slate-100">
-      <button class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition flex-shrink-0">
+      <button onclick="history.back()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition flex-shrink-0">
         <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
       </button>
       <div>
-        <h2 class="text-lg font-bold tracking-tight text-slate-800">Detail Order</h2>
+        <h2 class="text-lg font-bold tracking-tight text-slate-800">Procurement Detail</h2>
         <p class="text-xs text-slate-500">#SO-2841</p>
       </div>
       <div class="ml-auto flex items-center gap-1.5">
-        <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
-        <span class="text-xs font-medium text-green-600">Active</span>
+        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></span>
+        <span class="text-xs font-medium text-yellow-600">In Progress</span>
       </div>
     </div>
 
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-50">
       
-      <!-- Bagian Atas: Detail Pelanggan & SO -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 px-5 pt-4 pb-5 border-b border-slate-100">
+      <!-- Bagian Atas: Informasi Procurement -->
+      <div class="px-5 pt-4 pb-5 border-b border-slate-100">
         <!-- Card Informasi Pelanggan -->
         <div class="bg-slate-50 rounded-2xl p-4 mb-4">
           <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Pelanggan</h3>
@@ -51,10 +51,6 @@
               <span class="text-xs text-slate-500">Telepon</span>
               <span class="text-sm font-medium text-slate-800 text-right">+62 812-3456-7890</span>
             </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Alamat</span>
-              <span class="text-sm font-medium text-slate-800 text-right max-w-[200px]">Jl. Sudirman No. 45, Jakarta Pusat</span>
-            </div>
           </div>
         </div>
 
@@ -71,28 +67,294 @@
               <span class="text-sm font-medium text-slate-800">14 April 2026</span>
             </div>
             <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Tanggal Kirim</span>
-              <span class="text-sm font-medium text-slate-800">21 April 2026</span>
-            </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Metode Bayar</span>
-              <span class="text-sm font-medium text-slate-800">Transfer Bank</span>
-            </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Status</span>
+              <span class="text-xs text-slate-500">Status Procurement</span>
               <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                <span class="text-sm font-medium text-green-600">Disetujui</span>
+                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                <span class="text-sm font-medium text-yellow-600">In Progress</span>
               </div>
             </div>
             <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Catatan</span>
-              <span class="text-sm font-medium text-slate-800 text-right max-w-[200px]">Pengiriman prioritas, mohon konfirmasi sebelum kirim</span>
+              <span class="text-xs text-slate-500">Total Item</span>
+              <span class="text-sm font-medium text-slate-800">10 Produk</span>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Bagian Bawah: List Procurement Items -->
+      <div class="px-5 pt-5 pb-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-semibold text-slate-800">Daftar Procurement</h3>
+          <span class="text-xs font-medium bg-slate-100 px-2.5 py-1 rounded-full text-slate-500">10 item</span>
+        </div>
+
+        <!-- Filter Status Procurement -->
+        <div class="flex flex-wrap items-center gap-2 text-xs mb-4">
+          <span class="text-slate-500 font-medium">Filter:</span>
+          <button onclick="filterProcurement('all')" id="btnAll" class="px-3 py-1.5 rounded-full border font-medium transition bg-slate-900 text-white border-slate-900">Semua</button>
+          <button onclick="filterProcurement('available')" id="btnAvailable" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50">Available</button>
+          <button onclick="filterProcurement('empty')" id="btnEmpty" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50">Empty</button>
+          <button onclick="filterProcurement('process')" id="btnProcess" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50">Process</button>
+        </div>
+
+        <!-- Table View (Desktop) -->
+        <div id="tableContainer" class="hidden md:block overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Status</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">ID Item</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Nama Item</th>
+                <th class="text-center px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Qty</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Status Detail</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-slate-100">
+              <!-- Diisi JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Card View (Mobile) -->
+        <div id="cardContainer" class="md:hidden space-y-2.5">
+          <!-- Diisi JavaScript -->
+        </div>
+
+        <!-- Legend Status -->
+        <div class="mt-4 p-3 bg-slate-50 rounded-xl">
+          <h4 class="text-xs font-semibold text-slate-500 uppercase mb-2">Keterangan Status:</h4>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+              <span class="text-slate-600">Available</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+              <span class="text-slate-600">Empty</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+              <span class="text-slate-600">RFQ</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+              <span class="text-slate-600">RFQ Done</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+              <span class="text-slate-600">PO Pending</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+              <span class="text-slate-600">PO Ready</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+              <span class="text-slate-600">PO Settled</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+              <span class="text-slate-600">In Delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Action Bar -->
+    <div class="px-5 py-3 border-t border-slate-200 flex-shrink-0 bg-white">
+      <div class="flex gap-2">
+        <button class="flex-1 py-2.5 px-4 rounded-xl border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+          Export Data
+        </button>
+        <button class="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition">
+          Update Status
+        </button>
+      </div>
     </div>
   </div>
+
+  <script>
+    // Array data procurement items
+    const procurementItems = [
+      { id: "PRD-001", name: "Kabel HDMI 2.1", qty: 25, status: "available" },
+      { id: "PRD-002", name: "Adaptor USB-C", qty: 50, status: "rfq" },
+      { id: "PRD-003", name: "Mouse Wireless", qty: 30, status: "empty" },
+      { id: "PRD-004", name: "Keyboard Mechanical", qty: 15, status: "po_pending" },
+      { id: "PRD-005", name: "Webcam 4K", qty: 8, status: "rfq_done" },
+      { id: "PRD-006", name: "Monitor 24\" IPS", qty: 12, status: "available" },
+      { id: "PRD-007", name: "Headset Bluetooth", qty: 40, status: "in_delivery" },
+      { id: "PRD-008", name: "Flashdisk 64GB", qty: 100, status: "po_ready" },
+      { id: "PRD-009", name: "LAN Tester", qty: 20, status: "po_settled" },
+      { id: "PRD-010", name: "Power Supply 650W", qty: 5, status: "empty" }
+    ];
+
+    let currentFilter = 'all';
+
+    // Fungsi untuk mendapatkan warna dot berdasarkan status
+    function getStatusColor(status) {
+      if (status === 'available') return 'bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]';
+      if (status === 'empty') return 'bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]';
+      return 'bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]';
+    }
+
+    // Fungsi untuk mendapatkan label status
+    function getStatusLabel(status) {
+      const labels = {
+        'available': 'Available',
+        'empty': 'Empty',
+        'rfq': 'RFQ',
+        'rfq_done': 'RFQ Done',
+        'po_pending': 'PO Pending',
+        'po_ready': 'PO Ready',
+        'po_settled': 'PO Settled',
+        'in_delivery': 'In Delivery'
+      };
+      return labels[status] || status;
+    }
+
+    // Fungsi untuk mendapatkan kategori status (untuk filter)
+    function getStatusCategory(status) {
+      if (status === 'available') return 'available';
+      if (status === 'empty') return 'empty';
+      return 'process';
+    }
+
+    // Fungsi untuk merender table
+    function renderTable(items) {
+      const tableBody = document.getElementById('tableBody');
+      
+      if (items.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="5" class="px-4 py-8 text-center text-sm text-slate-500">
+              Tidak ada data ditemukan
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tableBody.innerHTML = items.map(item => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="px-4 py-3">
+            <span class="w-2.5 h-2.5 rounded-full ${getStatusColor(item.status)} inline-block"></span>
+          </td>
+          <td class="px-4 py-3 text-xs font-medium text-slate-600">${item.id}</td>
+          <td class="px-4 py-3 text-sm font-medium text-slate-800">${item.name}</td>
+          <td class="px-4 py-3 text-center text-sm text-slate-600">${item.qty}</td>
+          <td class="px-4 py-3 text-xs font-medium">
+            <span class="px-2 py-1 rounded-full text-xs font-medium
+              ${item.status === 'available' ? 'bg-green-50 text-green-700' : ''}
+              ${item.status === 'empty' ? 'bg-red-50 text-red-700' : ''}
+              ${getStatusCategory(item.status) === 'process' ? 'bg-yellow-50 text-yellow-700' : ''}
+            ">
+              ${getStatusLabel(item.status)}
+            </span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Fungsi untuk merender cards
+    function renderCards(items) {
+      const cardContainer = document.getElementById('cardContainer');
+      
+      if (items.length === 0) {
+        cardContainer.innerHTML = `
+          <div class="flex flex-col items-center justify-center py-12 text-center">
+            <svg class="w-16 h-16 text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-sm text-slate-500 font-medium">Tidak ada data ditemukan</p>
+          </div>
+        `;
+        return;
+      }
+
+      cardContainer.innerHTML = items.map(item => `
+        <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+          <div class="flex items-center justify-between mb-2.5">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full ${getStatusColor(item.status)}"></span>
+              <span class="text-xs font-semibold text-slate-500">${item.id}</span>
+            </div>
+            <span class="text-xs text-slate-400">Qty: ${item.qty}</span>
+          </div>
+          <h4 class="text-sm font-semibold text-slate-800 mb-2">${item.name}</h4>
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-1 rounded-full text-xs font-medium
+              ${item.status === 'available' ? 'bg-green-50 text-green-700' : ''}
+              ${item.status === 'empty' ? 'bg-red-50 text-red-700' : ''}
+              ${getStatusCategory(item.status) === 'process' ? 'bg-yellow-50 text-yellow-700' : ''}
+            ">
+              ${getStatusLabel(item.status)}
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Fungsi untuk merender semua (table + cards)
+    function renderAll(items) {
+      renderTable(items);
+      renderCards(items);
+    }
+
+    // Fungsi filter
+    function filterProcurement(filter) {
+      currentFilter = filter;
+      
+      // Update button styling
+      const buttons = {
+        'all': document.getElementById('btnAll'),
+        'available': document.getElementById('btnAvailable'),
+        'empty': document.getElementById('btnEmpty'),
+        'process': document.getElementById('btnProcess')
+      };
+
+      Object.keys(buttons).forEach(key => {
+        if (key === filter) {
+          buttons[key].className = 'px-3 py-1.5 rounded-full border font-medium transition bg-slate-900 text-white border-slate-900';
+        } else {
+          buttons[key].className = 'px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50';
+        }
+      });
+
+      // Filter items
+      let filteredItems = procurementItems;
+      if (filter !== 'all') {
+        filteredItems = procurementItems.filter(item => getStatusCategory(item.status) === filter);
+      }
+
+      renderAll(filteredItems);
+    }
+
+    // Initial render
+    renderAll(procurementItems);
+  </script>
+
+  <!-- Custom scrollbar -->
+  <style>
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 5px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+    
+    .scrollbar-thin {
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+    }
+  </style>
 </body>
 </html>
