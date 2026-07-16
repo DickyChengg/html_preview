@@ -6,8 +6,8 @@
   <title>Procurement Detail · Dioxus Ready</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-full m-0 p-0 bg-gray-100 flex items-center justify-center">
-  <div class="w-full min-w-[375px] max-w-[450px] h-screen max-h-screen mx-auto bg-white flex flex-col overflow-hidden">
+<body class="h-[90vh] m-0 p-0 bg-gray-100 flex items-center justify-center">
+  <div class="w-full min-w-[375px] h-full mx-auto bg-white flex flex-col overflow-hidden">
     
     <!-- Header (Sama dengan Detail SO) -->
     <div class="px-5 pt-5 pb-3 flex items-center gap-3 flex-shrink-0 border-b border-slate-100">
@@ -29,53 +29,55 @@
     <!-- Scrollable Content -->
     <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-50">
       
-      <!-- Bagian Atas: Informasi Procurement -->
+      <!-- Bagian Atas: Informasi (Grid responsive) -->
       <div class="px-5 pt-4 pb-5 border-b border-slate-100">
-        <!-- Card Informasi Pelanggan -->
-        <div class="bg-slate-50 rounded-2xl p-4 mb-4">
-          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Pelanggan</h3>
-          <div class="space-y-2.5">
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Nama</span>
-              <span class="text-sm font-medium text-slate-800 text-right">PT Maju Jaya</span>
-            </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Kontak</span>
-              <span class="text-sm font-medium text-slate-800 text-right">Budi Santoso</span>
-            </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Email</span>
-              <span class="text-sm font-medium text-slate-800 text-right">budi@majujaya.co.id</span>
-            </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Telepon</span>
-              <span class="text-sm font-medium text-slate-800 text-right">+62 812-3456-7890</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card Informasi Order -->
-        <div class="bg-slate-50 rounded-2xl p-4">
-          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Order</h3>
-          <div class="space-y-2.5">
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Order ID</span>
-              <span class="text-sm font-semibold text-slate-800">#SO-2841</span>
-            </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Tanggal Order</span>
-              <span class="text-sm font-medium text-slate-800">14 April 2026</span>
-            </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Status Procurement</span>
-              <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
-                <span class="text-sm font-medium text-yellow-600">In Progress</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Card Informasi Pelanggan -->
+          <div class="bg-slate-50 rounded-2xl p-4">
+            <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Pelanggan</h3>
+            <div class="space-y-2.5">
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Nama</span>
+                <span class="text-sm font-medium text-slate-800 text-right">PT Maju Jaya</span>
+              </div>
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Kontak</span>
+                <span class="text-sm font-medium text-slate-800 text-right">Budi Santoso</span>
+              </div>
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Email</span>
+                <span class="text-sm font-medium text-slate-800 text-right">budi@majujaya.co.id</span>
+              </div>
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Telepon</span>
+                <span class="text-sm font-medium text-slate-800 text-right">+62 812-3456-7890</span>
               </div>
             </div>
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-slate-500">Total Item</span>
-              <span class="text-sm font-medium text-slate-800">10 Produk</span>
+          </div>
+
+          <!-- Card Informasi Order -->
+          <div class="bg-slate-50 rounded-2xl p-4">
+            <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Order</h3>
+            <div class="space-y-2.5">
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Order ID</span>
+                <span class="text-sm font-semibold text-slate-800">#SO-2841</span>
+              </div>
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Tanggal Order</span>
+                <span class="text-sm font-medium text-slate-800">14 April 2026</span>
+              </div>
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Status Procurement</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                  <span class="text-sm font-medium text-yellow-600">In Progress</span>
+                </div>
+              </div>
+              <div class="flex justify-between items-start">
+                <span class="text-xs text-slate-500">Total Item</span>
+                <span class="text-sm font-medium text-slate-800">10 Produk</span>
+              </div>
             </div>
           </div>
         </div>
@@ -85,16 +87,22 @@
       <div class="px-5 pt-5 pb-5">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-sm font-semibold text-slate-800">Daftar Procurement</h3>
-          <span class="text-xs font-medium bg-slate-100 px-2.5 py-1 rounded-full text-slate-500">10 item</span>
+          <span id="totalItems" class="text-xs font-medium bg-slate-100 px-2.5 py-1 rounded-full text-slate-500">10 item</span>
         </div>
 
         <!-- Filter Status Procurement -->
         <div class="flex flex-wrap items-center gap-2 text-xs mb-4">
           <span class="text-slate-500 font-medium">Filter:</span>
           <button onclick="filterProcurement('all')" id="btnAll" class="px-3 py-1.5 rounded-full border font-medium transition bg-slate-900 text-white border-slate-900">Semua</button>
-          <button onclick="filterProcurement('available')" id="btnAvailable" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50">Available</button>
-          <button onclick="filterProcurement('empty')" id="btnEmpty" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50">Empty</button>
-          <button onclick="filterProcurement('process')" id="btnProcess" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50">Process</button>
+          <button onclick="filterProcurement('available')" id="btnAvailable" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-green-500"></span> Available
+          </button>
+          <button onclick="filterProcurement('empty')" id="btnEmpty" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-red-500"></span> Empty
+          </button>
+          <button onclick="filterProcurement('process')" id="btnProcess" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium transition hover:bg-slate-50 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-yellow-500"></span> Process
+          </button>
         </div>
 
         <!-- Table View (Desktop) -->
@@ -106,7 +114,6 @@
                 <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">ID Item</th>
                 <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Nama Item</th>
                 <th class="text-center px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Qty</th>
-                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Status Detail</th>
               </tr>
             </thead>
             <tbody id="tableBody" class="divide-y divide-slate-100">
@@ -221,6 +228,13 @@
       return 'process';
     }
 
+    // Fungsi untuk mendapatkan badge style
+    function getStatusBadgeStyle(status) {
+      if (status === 'available') return 'bg-green-50 text-green-700';
+      if (status === 'empty') return 'bg-red-50 text-red-700';
+      return 'bg-yellow-50 text-yellow-700';
+    }
+
     // Fungsi untuk merender table
     function renderTable(items) {
       const tableBody = document.getElementById('tableBody');
@@ -228,7 +242,7 @@
       if (items.length === 0) {
         tableBody.innerHTML = `
           <tr>
-            <td colspan="5" class="px-4 py-8 text-center text-sm text-slate-500">
+            <td colspan="4" class="px-4 py-8 text-center text-sm text-slate-500">
               Tidak ada data ditemukan
             </td>
           </tr>
@@ -239,20 +253,16 @@
       tableBody.innerHTML = items.map(item => `
         <tr class="hover:bg-slate-50 transition">
           <td class="px-4 py-3">
-            <span class="w-2.5 h-2.5 rounded-full ${getStatusColor(item.status)} inline-block"></span>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full ${getStatusColor(item.status)} inline-block flex-shrink-0"></span>
+              <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeStyle(item.status)}">
+                ${getStatusLabel(item.status)}
+              </span>
+            </div>
           </td>
           <td class="px-4 py-3 text-xs font-medium text-slate-600">${item.id}</td>
           <td class="px-4 py-3 text-sm font-medium text-slate-800">${item.name}</td>
           <td class="px-4 py-3 text-center text-sm text-slate-600">${item.qty}</td>
-          <td class="px-4 py-3 text-xs font-medium">
-            <span class="px-2 py-1 rounded-full text-xs font-medium
-              ${item.status === 'available' ? 'bg-green-50 text-green-700' : ''}
-              ${item.status === 'empty' ? 'bg-red-50 text-red-700' : ''}
-              ${getStatusCategory(item.status) === 'process' ? 'bg-yellow-50 text-yellow-700' : ''}
-            ">
-              ${getStatusLabel(item.status)}
-            </span>
-          </td>
         </tr>
       `).join('');
     }
@@ -280,17 +290,13 @@
               <span class="w-2.5 h-2.5 rounded-full ${getStatusColor(item.status)}"></span>
               <span class="text-xs font-semibold text-slate-500">${item.id}</span>
             </div>
-            <span class="text-xs text-slate-400">Qty: ${item.qty}</span>
+            <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeStyle(item.status)}">
+              ${getStatusLabel(item.status)}
+            </span>
           </div>
           <h4 class="text-sm font-semibold text-slate-800 mb-2">${item.name}</h4>
           <div class="flex items-center justify-between">
-            <span class="px-2 py-1 rounded-full text-xs font-medium
-              ${item.status === 'available' ? 'bg-green-50 text-green-700' : ''}
-              ${item.status === 'empty' ? 'bg-red-50 text-red-700' : ''}
-              ${getStatusCategory(item.status) === 'process' ? 'bg-yellow-50 text-yellow-700' : ''}
-            ">
-              ${getStatusLabel(item.status)}
-            </span>
+            <span class="text-xs text-slate-500">Qty: ${item.qty}</span>
           </div>
         </div>
       `).join('');
@@ -300,6 +306,7 @@
     function renderAll(items) {
       renderTable(items);
       renderCards(items);
+      document.getElementById('totalItems').textContent = `${items.length} item`;
     }
 
     // Fungsi filter
