@@ -3,255 +3,401 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>Sales Orders · Dioxus Ready</title>
+  <title>Detail Sales Order · Dioxus Ready</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="h-full mx-0 my4 px-0 py-4 bg-gray-100 flex items-center justify-center">
+<body class="h-full m-0 p-0 bg-gray-100 flex items-center justify-center">
   <div class="w-full min-w-[375px] max-w-[450px] h-screen max-h-screen mx-auto bg-white flex flex-col overflow-hidden">
     
-    <!-- Header -->
-    <div class="px-5 pt-5 pb-3 flex items-center justify-between flex-shrink-0">
-      <h2 class="text-xl font-bold tracking-tight text-slate-800">Sales Orders</h2>
-      <span class="text-xs font-medium bg-slate-100 px-3 py-1.5 rounded-full text-slate-500">12 orders</span>
-    </div>
-
-    <!-- Search bar -->
-    <div class="px-5 pb-3 flex-shrink-0">
-      <div class="relative">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"></path>
+    <!-- Header dengan back button -->
+    <div class="px-5 pt-5 pb-3 flex items-center gap-3 flex-shrink-0 border-b border-slate-100">
+      <button class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition flex-shrink-0">
+        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
-        <input type="text" placeholder="Cari ID atau nama..." 
-               class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition">
+      </button>
+      <div>
+        <h2 class="text-lg font-bold tracking-tight text-slate-800">Detail Order</h2>
+        <p class="text-xs text-slate-500">#SO-2841</p>
       </div>
-      <p class="text-[10px] text-slate-400 mt-1.5 ml-1 flex items-center gap-1">
-        <span class="inline-block w-1 h-1 rounded-full bg-indigo-300"></span> 
-        Search siap di-bind ke Dioxus state
-      </p>
+      <div class="ml-auto flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
+        <span class="text-xs font-medium text-green-600">Active</span>
+      </div>
     </div>
 
-    <!-- Filter Section -->
-    <div class="px-5 pb-2 space-y-3 flex-shrink-0">
-      <!-- Filter Status -->
-      <div class="flex flex-wrap items-center gap-2 text-xs">
-        <span class="text-slate-500 font-medium mr-1">Status:</span>
-        
-        <input type="radio" name="filter-status" id="statusAll" class="filter-status-all hidden" checked>
-        <label for="statusAll" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">Semua</label>
-        
-        <input type="radio" name="filter-status" id="statusGreen" class="filter-status-green hidden">
-        <label for="statusGreen" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50 flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span> Complete
-        </label>
-        
-        <input type="radio" name="filter-status" id="statusYellow" class="filter-status-yellow hidden">
-        <label for="statusYellow" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50 flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></span> Partial
-        </label>
-        
-        <input type="radio" name="filter-status" id="statusRed" class="filter-status-red hidden">
-        <label for="statusRed" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50 flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></span> Incomplete
-        </label>
-      </div>
-
-      <!-- Filter Tanggal -->
-      <div class="flex flex-wrap items-center gap-2 text-xs">
-        <span class="text-slate-500 font-medium mr-1">Tanggal:</span>
-        
-        <input type="radio" name="filter-date" id="dateAll" class="filter-date-all hidden" checked>
-        <label for="dateAll" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">Semua</label>
-        
-        <input type="radio" name="filter-date" id="dateApril" class="filter-date-april hidden">
-        <label for="dateApril" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">April 2026</label>
-        
-        <input type="radio" name="filter-date" id="dateMaret" class="filter-date-maret hidden">
-        <label for="dateMaret" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">Maret 2026</label>
-      </div>
-      <div class="text-[10px] text-slate-400">Pilih filter, hasil otomatis diperbarui.</div>
-    </div>
-
-    <!-- Order List -->
-    <div class="px-5 pb-6 pt-1 flex-1 overflow-y-auto order-list space-y-2.5 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-50">
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-50">
       
-      <!-- Item 1 · green, april -->
-      <div class="order-item status-green date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2841</div>
-            <div class="text-xs text-slate-500 mt-0.5">PT Maju Jaya</div>
+      <!-- Bagian Atas: Detail Pelanggan & SO -->
+      <div class="px-5 pt-4 pb-5 border-b border-slate-100">
+        <!-- Card Informasi Pelanggan -->
+        <div class="bg-slate-50 rounded-2xl p-4 mb-4">
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Pelanggan</h3>
+          <div class="space-y-2.5">
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Nama</span>
+              <span class="text-sm font-medium text-slate-800 text-right">PT Maju Jaya</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Kontak</span>
+              <span class="text-sm font-medium text-slate-800 text-right">Budi Santoso</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Email</span>
+              <span class="text-sm font-medium text-slate-800 text-right">budi@majujaya.co.id</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Telepon</span>
+              <span class="text-sm font-medium text-slate-800 text-right">+62 812-3456-7890</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Alamat</span>
+              <span class="text-sm font-medium text-slate-800 text-right max-w-[200px]">Jl. Sudirman No. 45, Jakarta Pusat</span>
+            </div>
           </div>
         </div>
-        <div class="text-xs text-slate-500 font-medium">14 Apr 2026</div>
+
+        <!-- Card Informasi Order -->
+        <div class="bg-slate-50 rounded-2xl p-4">
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Order</h3>
+          <div class="space-y-2.5">
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Order ID</span>
+              <span class="text-sm font-semibold text-slate-800">#SO-2841</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Tanggal Order</span>
+              <span class="text-sm font-medium text-slate-800">14 April 2026</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Tanggal Kirim</span>
+              <span class="text-sm font-medium text-slate-800">21 April 2026</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Metode Bayar</span>
+              <span class="text-sm font-medium text-slate-800">Transfer Bank</span>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Status</span>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span class="text-sm font-medium text-green-600">Disetujui</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-start">
+              <span class="text-xs text-slate-500">Catatan</span>
+              <span class="text-sm font-medium text-slate-800 text-right max-w-[200px]">Pengiriman prioritas, mohon konfirmasi sebelum kirim</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Item 2 · yellow, april -->
-      <div class="order-item status-yellow date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2892</div>
-            <div class="text-xs text-slate-500 mt-0.5">Cahaya Baru</div>
+      <!-- Bagian Bawah: List Produk -->
+      <div class="px-5 pt-5 pb-5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-semibold text-slate-800">Daftar Produk</h3>
+          <span class="text-xs font-medium bg-slate-100 px-2.5 py-1 rounded-full text-slate-500">10 item</span>
+        </div>
+
+        <!-- Table View (Hidden di mobile, visible di tablet+) -->
+        <div class="hidden md:block overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Status</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">ID Produk</th>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Nama Produk</th>
+                <th class="text-center px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Qty</th>
+                <th class="text-right px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Harga Satuan</th>
+                <th class="text-right px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Total</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <!-- Item 1 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-001</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Kabel HDMI 2.1</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">25</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 85.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 2.125.000</td>
+              </tr>
+              <!-- Item 2 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-002</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Adaptor USB-C</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">50</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 45.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 2.250.000</td>
+              </tr>
+              <!-- Item 3 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-003</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Mouse Wireless</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">30</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 120.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 3.600.000</td>
+              </tr>
+              <!-- Item 4 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-004</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Keyboard Mechanical</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">15</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 450.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 6.750.000</td>
+              </tr>
+              <!-- Item 5 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-005</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Webcam 4K</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">8</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 890.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 7.120.000</td>
+              </tr>
+              <!-- Item 6 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-006</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Monitor 24" IPS</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">12</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 1.850.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 22.200.000</td>
+              </tr>
+              <!-- Item 7 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-007</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Headset Bluetooth</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">40</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 175.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 7.000.000</td>
+              </tr>
+              <!-- Item 8 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-008</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Flashdisk 64GB</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">100</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 35.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 3.500.000</td>
+              </tr>
+              <!-- Item 9 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-009</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">LAN Tester</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">20</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 95.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 1.900.000</td>
+              </tr>
+              <!-- Item 10 -->
+              <tr class="hover:bg-slate-50 transition">
+                <td class="px-4 py-3"><span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></span></td>
+                <td class="px-4 py-3 text-xs font-medium text-slate-600">PRD-010</td>
+                <td class="px-4 py-3 text-sm font-medium text-slate-800">Power Supply 650W</td>
+                <td class="px-4 py-3 text-center text-sm text-slate-600">5</td>
+                <td class="px-4 py-3 text-right text-sm text-slate-600">Rp 780.000</td>
+                <td class="px-4 py-3 text-right text-sm font-semibold text-slate-800">Rp 3.900.000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Card View (Mobile) -->
+        <div class="md:hidden space-y-2.5">
+          <!-- Card Item 1 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-001</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 25</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Kabel HDMI 2.1</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 85.000 × 25</span>
+              <span class="text-sm font-bold text-slate-800">Rp 2.125.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 2 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-002</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 50</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Adaptor USB-C</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 45.000 × 50</span>
+              <span class="text-sm font-bold text-slate-800">Rp 2.250.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 3 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-003</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 30</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Mouse Wireless</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 120.000 × 30</span>
+              <span class="text-sm font-bold text-slate-800">Rp 3.600.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 4 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-004</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 15</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Keyboard Mechanical</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 450.000 × 15</span>
+              <span class="text-sm font-bold text-slate-800">Rp 6.750.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 5 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-005</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 8</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Webcam 4K</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 890.000 × 8</span>
+              <span class="text-sm font-bold text-slate-800">Rp 7.120.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 6 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-006</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 12</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Monitor 24" IPS</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 1.850.000 × 12</span>
+              <span class="text-sm font-bold text-slate-800">Rp 22.200.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 7 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-007</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 40</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Headset Bluetooth</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 175.000 × 40</span>
+              <span class="text-sm font-bold text-slate-800">Rp 7.000.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 8 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-008</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 100</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Flashdisk 64GB</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 35.000 × 100</span>
+              <span class="text-sm font-bold text-slate-800">Rp 3.500.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 9 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-009</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 20</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">LAN Tester</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 95.000 × 20</span>
+              <span class="text-sm font-bold text-slate-800">Rp 1.900.000</span>
+            </div>
+          </div>
+
+          <!-- Card Item 10 -->
+          <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></span>
+                <span class="text-xs font-semibold text-slate-500">PRD-010</span>
+              </div>
+              <span class="text-xs text-slate-400">Qty: 5</span>
+            </div>
+            <h4 class="text-sm font-semibold text-slate-800 mb-2">Power Supply 650W</h4>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-slate-500">Rp 780.000 × 5</span>
+              <span class="text-sm font-bold text-slate-800">Rp 3.900.000</span>
+            </div>
           </div>
         </div>
-        <div class="text-xs text-slate-500 font-medium">10 Apr 2026</div>
+
+        <!-- Total Harga -->
+        <div class="mt-4 pt-4 border-t-2 border-slate-200">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-semibold text-slate-600">Total Harga</span>
+            <span class="text-lg font-bold text-slate-900">Rp 60.345.000</span>
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1">*Harga sudah termasuk PPN 11%</p>
+        </div>
       </div>
 
-      <!-- Item 3 · red, maret -->
-      <div class="order-item status-red date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2765</div>
-            <div class="text-xs text-slate-500 mt-0.5">Berkah Sentosa</div>
-          </div>
-        </div>
-        <div class="text-xs text-slate-500 font-medium">28 Mar 2026</div>
-      </div>
-
-      <!-- Item 4 · green, maret -->
-      <div class="order-item status-green date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2801</div>
-            <div class="text-xs text-slate-500 mt-0.5">Digital Nusa</div>
-          </div>
-        </div>
-        <div class="text-xs text-slate-500 font-medium">22 Mar 2026</div>
-      </div>
-
-      <!-- Item 5 · red, april -->
-      <div class="order-item status-red date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2910</div>
-            <div class="text-xs text-slate-500 mt-0.5">Global Niaga</div>
-          </div>
-        </div>
-        <div class="text-xs text-slate-500 font-medium">05 Apr 2026</div>
-      </div>
-
-      <!-- Item 6 · yellow, maret -->
-      <div class="order-item status-yellow date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2788</div>
-            <div class="text-xs text-slate-500 mt-0.5">Sumber Rejeki</div>
-          </div>
-        </div>
-        <div class="text-xs text-slate-500 font-medium">19 Mar 2026</div>
-      </div>
-
-      <!-- Item 7 · green, april -->
-      <div class="order-item status-green date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2925</div>
-            <div class="text-xs text-slate-500 mt-0.5">Artha Prima</div>
-          </div>
-        </div>
-        <div class="text-xs text-slate-500 font-medium">18 Apr 2026</div>
-      </div>
-
-      <!-- Item 8 · red, april -->
-      <div class="order-item status-red date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
-        <div class="flex items-center gap-3">
-          <div class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></div>
-          <div>
-            <div class="text-sm font-semibold text-slate-800">#SO-2903</div>
-            <div class="text-xs text-slate-500 mt-0.5">Mitra Utama</div>
-          </div>
-        </div>
-        <div class="text-xs text-slate-500 font-medium">02 Apr 2026</div>
-      </div>
     </div>
 
-    <!-- Footer -->
-    <div class="px-5 py-2 border-t border-slate-100 text-[10px] text-slate-400 text-right flex-shrink-0">
-      min 375 · max 450 · pure Tailwind
+    <!-- Bottom Action Bar -->
+    <div class="px-5 py-3 border-t border-slate-200 flex-shrink-0 bg-white">
+      <div class="flex gap-2">
+        <button class="flex-1 py-2.5 px-4 rounded-xl border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+          Edit Order
+        </button>
+        <button class="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition">
+          Proses Order
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Hidden style untuk filter logic dan radio checked styling -->
+  <!-- Custom scrollbar styling -->
   <style>
-    /* Filter logic - tidak bisa dihindari karena Tailwind tidak support complex selector */
-    .filter-status-all:checked ~ .order-list .order-item {
-      display: flex;
-    }
-    
-    .filter-status-green:checked ~ .order-list .order-item:not(.status-green) {
-      display: none;
-    }
-    
-    .filter-status-yellow:checked ~ .order-list .order-item:not(.status-yellow) {
-      display: none;
-    }
-    
-    .filter-status-red:checked ~ .order-list .order-item:not(.status-red) {
-      display: none;
-    }
-
-    .filter-date-all:checked ~ .order-list .order-item {
-      display: flex;
-    }
-    
-    .filter-date-april:checked ~ .order-list .order-item:not(.date-april) {
-      display: none;
-    }
-    
-    .filter-date-maret:checked ~ .order-list .order-item:not(.date-maret) {
-      display: none;
-    }
-
-    /* Kombinasi filter status + tanggal */
-    .filter-status-green:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-green),
-    .filter-status-yellow:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-yellow),
-    .filter-status-red:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-red) {
-      display: none;
-    }
-    
-    .filter-status-all:checked.filter-date-april:checked ~ .order-list .order-item:not(.date-april),
-    .filter-status-all:checked.filter-date-maret:checked ~ .order-list .order-item:not(.date-maret) {
-      display: none;
-    }
-    
-    .filter-status-green:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-green.date-april) {
-      display: none;
-    }
-    
-    .filter-status-green:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-green.date-maret) {
-      display: none;
-    }
-    
-    .filter-status-yellow:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-yellow.date-april) {
-      display: none;
-    }
-    
-    .filter-status-yellow:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-yellow.date-maret) {
-      display: none;
-    }
-    
-    .filter-status-red:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-red.date-april) {
-      display: none;
-    }
-    
-    .filter-status-red:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-red.date-maret) {
-      display: none;
-    }
-
-    /* Styling untuk radio button yang checked */
-    input[type="radio"]:checked + label {
-      background-color: #0f172a;
-      color: white;
-      border-color: #0f172a;
-    }
-
-    /* Custom scrollbar */
     .scrollbar-thin::-webkit-scrollbar {
       width: 5px;
     }

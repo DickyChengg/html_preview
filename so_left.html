@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Sales Orders · Dioxus Ready</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-full mx-0 my4 px-0 py-4 bg-gray-100 flex items-center justify-center">
+  <div class="w-full min-w-[375px] max-w-[450px] h-screen max-h-screen mx-auto bg-white flex flex-col overflow-hidden">
+    
+    <!-- Header -->
+    <div class="px-5 pt-5 pb-3 flex items-center justify-between flex-shrink-0">
+      <h2 class="text-xl font-bold tracking-tight text-slate-800">Sales Orders</h2>
+      <span class="text-xs font-medium bg-slate-100 px-3 py-1.5 rounded-full text-slate-500">12 orders</span>
+    </div>
+
+    <!-- Search bar -->
+    <div class="px-5 pb-3 flex-shrink-0">
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"></path>
+        </svg>
+        <input type="text" placeholder="Cari ID atau nama..." 
+               class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition">
+      </div>
+      <p class="text-[10px] text-slate-400 mt-1.5 ml-1 flex items-center gap-1">
+        <span class="inline-block w-1 h-1 rounded-full bg-indigo-300"></span> 
+        Search siap di-bind ke Dioxus state
+      </p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="px-5 pb-2 space-y-3 flex-shrink-0">
+      <!-- Filter Status -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-500 font-medium mr-1">Status:</span>
+        
+        <input type="radio" name="filter-status" id="statusAll" class="filter-status-all hidden" checked>
+        <label for="statusAll" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">Semua</label>
+        
+        <input type="radio" name="filter-status" id="statusGreen" class="filter-status-green hidden">
+        <label for="statusGreen" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></span> Complete
+        </label>
+        
+        <input type="radio" name="filter-status" id="statusYellow" class="filter-status-yellow hidden">
+        <label for="statusYellow" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></span> Partial
+        </label>
+        
+        <input type="radio" name="filter-status" id="statusRed" class="filter-status-red hidden">
+        <label for="statusRed" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50 flex items-center gap-1">
+          <span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></span> Incomplete
+        </label>
+      </div>
+
+      <!-- Filter Tanggal -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <span class="text-slate-500 font-medium mr-1">Tanggal:</span>
+        
+        <input type="radio" name="filter-date" id="dateAll" class="filter-date-all hidden" checked>
+        <label for="dateAll" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">Semua</label>
+        
+        <input type="radio" name="filter-date" id="dateApril" class="filter-date-april hidden">
+        <label for="dateApril" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">April 2026</label>
+        
+        <input type="radio" name="filter-date" id="dateMaret" class="filter-date-maret hidden">
+        <label for="dateMaret" class="px-3 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 font-medium cursor-pointer select-none transition hover:bg-slate-50">Maret 2026</label>
+      </div>
+      <div class="text-[10px] text-slate-400">Pilih filter, hasil otomatis diperbarui.</div>
+    </div>
+
+    <!-- Order List -->
+    <div class="px-5 pb-6 pt-1 flex-1 overflow-y-auto order-list space-y-2.5 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-50">
+      
+      <!-- Item 1 · green, april -->
+      <div class="order-item status-green date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2841</div>
+            <div class="text-xs text-slate-500 mt-0.5">PT Maju Jaya</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">14 Apr 2026</div>
+      </div>
+
+      <!-- Item 2 · yellow, april -->
+      <div class="order-item status-yellow date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2892</div>
+            <div class="text-xs text-slate-500 mt-0.5">Cahaya Baru</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">10 Apr 2026</div>
+      </div>
+
+      <!-- Item 3 · red, maret -->
+      <div class="order-item status-red date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2765</div>
+            <div class="text-xs text-slate-500 mt-0.5">Berkah Sentosa</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">28 Mar 2026</div>
+      </div>
+
+      <!-- Item 4 · green, maret -->
+      <div class="order-item status-green date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2801</div>
+            <div class="text-xs text-slate-500 mt-0.5">Digital Nusa</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">22 Mar 2026</div>
+      </div>
+
+      <!-- Item 5 · red, april -->
+      <div class="order-item status-red date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2910</div>
+            <div class="text-xs text-slate-500 mt-0.5">Global Niaga</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">05 Apr 2026</div>
+      </div>
+
+      <!-- Item 6 · yellow, maret -->
+      <div class="order-item status-yellow date-maret flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_0_2px_rgba(234,179,8,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2788</div>
+            <div class="text-xs text-slate-500 mt-0.5">Sumber Rejeki</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">19 Mar 2026</div>
+      </div>
+
+      <!-- Item 7 · green, april -->
+      <div class="order-item status-green date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_0_2px_rgba(16,185,129,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2925</div>
+            <div class="text-xs text-slate-500 mt-0.5">Artha Prima</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">18 Apr 2026</div>
+      </div>
+
+      <!-- Item 8 · red, april -->
+      <div class="order-item status-red date-april flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition rounded-xl px-3.5 py-3 border border-transparent hover:border-slate-200">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></div>
+          <div>
+            <div class="text-sm font-semibold text-slate-800">#SO-2903</div>
+            <div class="text-xs text-slate-500 mt-0.5">Mitra Utama</div>
+          </div>
+        </div>
+        <div class="text-xs text-slate-500 font-medium">02 Apr 2026</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-5 py-2 border-t border-slate-100 text-[10px] text-slate-400 text-right flex-shrink-0">
+      min 375 · max 450 · pure Tailwind
+    </div>
+  </div>
+
+  <!-- Hidden style untuk filter logic dan radio checked styling -->
+  <style>
+    /* Filter logic - tidak bisa dihindari karena Tailwind tidak support complex selector */
+    .filter-status-all:checked ~ .order-list .order-item {
+      display: flex;
+    }
+    
+    .filter-status-green:checked ~ .order-list .order-item:not(.status-green) {
+      display: none;
+    }
+    
+    .filter-status-yellow:checked ~ .order-list .order-item:not(.status-yellow) {
+      display: none;
+    }
+    
+    .filter-status-red:checked ~ .order-list .order-item:not(.status-red) {
+      display: none;
+    }
+
+    .filter-date-all:checked ~ .order-list .order-item {
+      display: flex;
+    }
+    
+    .filter-date-april:checked ~ .order-list .order-item:not(.date-april) {
+      display: none;
+    }
+    
+    .filter-date-maret:checked ~ .order-list .order-item:not(.date-maret) {
+      display: none;
+    }
+
+    /* Kombinasi filter status + tanggal */
+    .filter-status-green:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-green),
+    .filter-status-yellow:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-yellow),
+    .filter-status-red:checked.filter-date-all:checked ~ .order-list .order-item:not(.status-red) {
+      display: none;
+    }
+    
+    .filter-status-all:checked.filter-date-april:checked ~ .order-list .order-item:not(.date-april),
+    .filter-status-all:checked.filter-date-maret:checked ~ .order-list .order-item:not(.date-maret) {
+      display: none;
+    }
+    
+    .filter-status-green:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-green.date-april) {
+      display: none;
+    }
+    
+    .filter-status-green:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-green.date-maret) {
+      display: none;
+    }
+    
+    .filter-status-yellow:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-yellow.date-april) {
+      display: none;
+    }
+    
+    .filter-status-yellow:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-yellow.date-maret) {
+      display: none;
+    }
+    
+    .filter-status-red:checked.filter-date-april:checked ~ .order-list .order-item:not(.status-red.date-april) {
+      display: none;
+    }
+    
+    .filter-status-red:checked.filter-date-maret:checked ~ .order-list .order-item:not(.status-red.date-maret) {
+      display: none;
+    }
+
+    /* Styling untuk radio button yang checked */
+    input[type="radio"]:checked + label {
+      background-color: #0f172a;
+      color: white;
+      border-color: #0f172a;
+    }
+
+    /* Custom scrollbar */
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 5px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+    
+    .scrollbar-thin {
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+    }
+  </style>
+</body>
+</html>
