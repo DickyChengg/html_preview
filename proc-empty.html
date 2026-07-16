@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Procurement · Empty</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-[90vh] m-0 p-0 bg-gray-100 flex items-center justify-center">
+  <div class="w-full min-w-[375px] h-full mx-auto bg-white flex flex-col overflow-hidden">
+    
+    <!-- Header -->
+    <div class="px-5 pt-5 pb-3 flex items-center gap-3 flex-shrink-0 border-b border-slate-100">
+      <button onclick="history.back()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition flex-shrink-0">
+        <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      <div>
+        <h2 class="text-lg font-bold tracking-tight text-slate-800">Procurement</h2>
+        <p class="text-xs text-slate-500">#SO-2841 · PRD-005</p>
+      </div>
+      <div class="ml-auto flex items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_0_2px_rgba(239,68,68,0.25)]"></span>
+        <span class="text-xs font-medium text-red-600">Empty</span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto">
+      <div class="px-5 pt-4 pb-5">
+        <!-- Item Info -->
+        <div class="bg-slate-50 rounded-2xl p-4 mb-4">
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Informasi Item</h3>
+          <div class="space-y-2.5">
+            <div class="flex justify-between">
+              <span class="text-xs text-slate-500">ID Item</span>
+              <span class="text-sm font-medium text-slate-800">PRD-005</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-xs text-slate-500">Nama Item</span>
+              <span class="text-sm font-medium text-slate-800">Webcam 4K</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-xs text-slate-500">Qty Dibutuhkan</span>
+              <span class="text-sm font-medium text-slate-800">8 Unit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Header Only -->
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Nama Vendor</th>
+                <th class="text-right px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Harga Satuan</th>
+                <th class="text-center px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Qty</th>
+                <th class="text-right px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Total Harga</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4" class="px-4 py-12 text-center">
+                  <svg class="w-16 h-16 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                  </svg>
+                  <p class="text-sm font-medium text-slate-500 mb-1">Belum ada RFQ</p>
+                  <p class="text-xs text-slate-400">Tambahkan RFQ untuk mencari vendor</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tombol Tambah RFQ -->
+        <div class="mt-4">
+          <button onclick="window.location.href='proc-rfq.html'" class="w-full py-3 px-4 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Tambah RFQ Baru
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="px-5 py-3 border-t border-slate-200 flex-shrink-0 bg-white">
+      <div class="flex gap-2">
+        <button onclick="window.location.href='procurement-detail.html'" class="flex-1 py-2.5 px-4 rounded-xl border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+          ← Previous
+        </button>
+        <button onclick="window.location.href='proc-rfq.html'" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 transition">
+          Next →
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
