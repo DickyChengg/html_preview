@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Sales Order App · Navigation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-full m-0 p-0 bg-gray-100 flex items-center justify-center">
+  <div class="w-full min-w-[375px] max-w-[450px] h-screen max-h-screen mx-auto bg-white flex flex-col overflow-hidden">
+    
+    <!-- Header -->
+    <div class="px-5 pt-8 pb-4 flex-shrink-0 border-b border-slate-100">
+      <h1 class="text-2xl font-bold tracking-tight text-slate-800">Sales Order App</h1>
+      <p class="text-sm text-slate-500 mt-1">Prototype Navigation</p>
+    </div>
+
+    <!-- Navigation List -->
+    <div id="navContainer" class="flex-1 overflow-y-auto px-5 py-6 space-y-3">
+      <!-- Diisi oleh JavaScript -->
+    </div>
+
+    <!-- Footer Info -->
+    <div class="px-5 py-4 border-t border-slate-100 flex-shrink-0">
+      <p class="text-xs text-slate-400 text-center">Sales Order App · Dioxus Ready</p>
+    </div>
+  </div>
+
+  <script>
+    // Array berisi data halaman
+    const pages = [
+      {
+        title: "Sales Order List",
+        description: "Daftar sales order dengan filter & search",
+        url: "so_left.html",
+        icon: "list",
+        color: "bg-indigo-500 hover:bg-indigo-600"
+      },
+      {
+        title: "Detail Sales Order",
+        description: "Detail order dengan daftar produk",
+        url: "so_right.html",
+        icon: "detail",
+        color: "bg-emerald-500 hover:bg-emerald-600"
+      },
+      {
+        title: "Procurement List",
+        description: "Daftar sales order untuk procurement",
+        url: "proc_left.html",
+        icon: "list",
+        color: "bg-slate-300"
+      }
+    ];
+
+    // Fungsi untuk mendapatkan icon SVG berdasarkan tipe
+    function getIcon(type) {
+      const icons = {
+        list: `
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+          </svg>`,
+        detail: `
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>`,
+        add: `
+          <svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>`
+      };
+      return icons[type] || icons.add;
+    }
+
+    // Fungsi untuk navigasi ke halaman
+    function navigateTo(url) {
+      if (url && url !== '#') {
+        window.location.href = url;
+      }
+    }
+
+    // Fungsi untuk merender navigasi
+    function renderNavigation() {
+      const container = document.getElementById('navContainer');
+      
+      // Looping array pages untuk membuat HTML
+      container.innerHTML = pages.map((page, index) => `
+        <div onclick="navigateTo('${page.url}')" 
+             class="flex items-center gap-4 bg-slate-50 hover:bg-slate-100 transition rounded-2xl p-4 border border-slate-100 group cursor-pointer ${page.url === '#' ? 'border-dashed' : ''}">
+          <div class="w-12 h-12 rounded-xl ${page.color} flex items-center justify-center flex-shrink-0 transition">
+            ${getIcon(page.icon)}
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-semibold ${page.url === '#' ? 'text-slate-400' : 'text-slate-800'}">${page.title}</h3>
+            <p class="text-xs ${page.url === '#' ? 'text-slate-400' : 'text-slate-500'} mt-0.5">${page.description}</p>
+          </div>
+          ${page.url !== '#' ? `
+            <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-600 transition flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Render navigasi saat halaman dimuat
+    renderNavigation();
+  </script>
+</body>
+</html>
